@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Ensure window.fetch has both a getter and a setter so that platform harnesses,
+      // devtools, and extension proxies can safely reassign window.fetch without throwing:
+      // "TypeError: Cannot set property fetch of #<Window> which has only a getter"
+      (function() {
+        try {
+          var originalFetch = typeof window !== 'undefined' && window.fetch ? window.fetch.bind(window) : undefined;
+          var currentFetch = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            configurable: true,
+            enumerable: true,
+            get: function() {
+              return currentFetch;
+            },
+            set: function(newFetch) {
+              currentFetch = newFetch;
+            }
+          });
+        } catch (e) {
+          // Graceful fallback if redefine fails
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QueueLess - Live Queue Action Advisor</title>
+    <meta name="description" content="Live queue action advisor for campus offices and clinics, converting changing queue conditions into clear wait-here, wait-elsewhere, or come-back-later decisions." />
+    <meta property="og:title" content="QueueLess - Live Queue Action Advisor" />
+    <meta property="og:description" content="Live queue action advisor for campus offices and clinics, converting changing queue conditions into clear wait-here, wait-elsewhere, or come-back-later decisions." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

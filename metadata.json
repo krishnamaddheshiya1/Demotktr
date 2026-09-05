@@ -1,0 +1,6 @@
+{
+  "name": "QueueLess",
+  "description": "Live queue action advisor for campus offices and clinics, converting changing queue conditions into clear wait-here, wait-elsewhere, or come-back-later decisions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

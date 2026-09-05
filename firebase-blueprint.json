@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account document containing profile information and role",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique Firebase Authentication UID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User full name or handle"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["visitor", "staff", "admin"],
+          "description": "Authorization role for counter management"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        },
+        "preferredQueueCode": {
+          "type": "string",
+          "description": "Saved default queue code"
+        }
+      },
+      "required": ["id", "role", "createdAt"]
+    },
+    "SavedVisit": {
+      "title": "SavedVisit",
+      "description": "Saved queue wait estimate and visit reminder ticket",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique visit record identifier"
+        },
+        "queueId": {
+          "type": "string",
+          "description": "Queue identifier code"
+        },
+        "queueName": {
+          "type": "string",
+          "description": "Display name of counter"
+        },
+        "action": {
+          "type": "string",
+          "enum": ["WAIT_HERE", "WAIT_ELSEWHERE", "COME_BACK_LATER"],
+          "description": "Recommended visitor action"
+        },
+        "waitMinMinutes": {
+          "type": "number",
+          "description": "Lower bound estimated wait minutes"
+        },
+        "waitMaxMinutes": {
+          "type": "number",
+          "description": "Upper bound estimated wait minutes"
+        },
+        "savedAt": {
+          "type": "string",
+          "description": "ISO timestamp when visit was saved"
+        },
+        "notes": {
+          "type": "string",
+          "description": "User notes or reminders"
+        }
+      },
+      "required": ["id", "queueId", "action", "savedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document with role authorization"
+    },
+    "/users/{userId}/savedVisits/{visitId}": {
+      "schema": "SavedVisit",
+      "description": "User saved queue visit tickets and reminder history"
+    }
+  }
+}

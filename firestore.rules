@@ -1,0 +1,27 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Connection test document
+    match /test/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // User profile document
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId
+                    && request.resource.data.id == userId
+                    && request.resource.data.role in ['visitor', 'staff', 'admin'];
+      allow update: if request.auth != null && request.auth.uid == userId
+                    && request.resource.data.id == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+
+      // Saved visits subcollection
+      match /savedVisits/{visitId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
